@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>weather-App</title>
+    <style>
+        *{
+            box-sizing: border-box;
+            margin: 0px;
+            padding: 0px;
+        }
+        body{
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            background-color: rgb(182, 185, 205);
+           
+        }
+        .container{
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center; 
+           /* background-color: rgb(20, 55, 55); */
+         
+           
+        }
+        .box{
+            width: 450px;
+            /* height: 550px; */
+           background:linear-gradient(to bottom right,pink,rgb(133, 171, 200),rgb(149, 238, 157));
+           border-radius: 10px;
+           padding: 40px 35px;
+           display: flex;
+           flex-direction: column;
+           align-items: center;
+          flex-wrap: wrap;
+          box-shadow: 3px 3px 6px rgb(14, 13, 13);
+           
+        }
+         input[type="text"]{
+            min-width: 80%;
+            min-height: 50px;
+            border-radius: 25px;
+            outline: none;
+            font-size: x-large;
+            border: none;
+            padding: 5px;
+            font-style: italic;
+            font-family: ns-serif;
+            font-weight: bolder;
+            width: 100%;
+         }
+         button{
+            width: 70px;
+            height: 50px;
+            border-radius:100%; 
+         }
+         button>img{
+            width: 20px;
+         }
+         .input{
+           display: flex;
+           justify-content: space-between;
+           
+         }
+         .weather-icon{
+            width: 150px;
+         }
+         .weather{
+            text-align: center;
+            margin-top: 30px;
+            
+         }
+
+         .humidity>img{
+             height: 70px;
+         }
+         .humidity{
+            display: flex;
+            align-items: center;
+         }
+         .wind>img{
+             height: 70px;
+         }
+         .wind{
+            display: flex;
+            align-items: center;
+         }
+         .last{
+            display: flex;
+            justify-content: space-around;
+            width: 400px;
+            
+            
+         }
+         .container2{
+            display: none;
+         }
+         
+        
+       @media only screen and (max-width:300px){
+            .container{
+                width: 125%;
+               
+            }
+        }
+           
+
+         
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="box">
+           <div class="input">
+                <input type="text" name="" id="" placeholder="Enter city name">
+               <button onclick="checkWeather()"><img src="https://cdn-icons-png.flaticon.com/512/149/149852.png" alt=""></button>
+            </div>
+            <div class="container2">
+            <div class="weather">
+                <h2 class="climate">Haze</h2>
+                <img src="https://cdn-icons-png.flaticon.com/512/3512/3512746.png" alt="" class="weather-icon">
+                <h1 class="temp">21°C</h1>
+                <h2 class="city">New York</h2>
+            </div>
+
+            <div class="last">
+                <div class="humidity">
+                   <img src="https://cdn-icons-png.flaticon.com/512/5664/5664982.png" alt="">
+                    <div class="hum">
+                        <h2 class="h">48%</h2>
+                        <p>Humidity</p>
+                    </div>
+                </div>
+                <div class="wind">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2204/2204347.png" alt="">
+                    <div class="hum">
+                        <h2 class="speed">48%</h2>
+                        <p>Wind Speed</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script>
+        const apiKey="c2c1eae24c689d134e590d6a4d79fd3b";
+        // const apiUrl="https://api.openweathermap.org/data/2.5/weather?q=mumbai";
+        const apiUrl="https://api.openweathermap.org/data/2.5/weather?units=metric";
+       const citys=document.querySelector('input[type="text"]');
+       let temp=document.querySelector('.temp');
+       let place=document.querySelector('.city');
+       let humid=document.querySelector('.h');
+       let speed=document.querySelector('.speed');
+       let img=document.querySelector(".weather img")
+       let climate=document.querySelector(".climate");
+       
+        const checkWeather=async()=>{
+           
+           const city=citys.value;
+            const response=await fetch(apiUrl+`&appid=${apiKey}`+`&q=${city}`);
+            let data=await response.json();
+             
+           console.log(data);
+            temp.innerHTML=data.main.temp+"°C";
+            place.innerHTML=data.name;
+            humid.innerText=data.main.humidity+"%";
+            speed.innerText=data.wind.speed+"km"
+           console.log(typeof(data));
+           
+           if(data.weather[0].main=="Haze"){
+            img.src="https://cdn-icons-png.flaticon.com/512/1779/1779862.png";
+            climate.innerHTML="Haze";
+           }
+            if(data.weather[0].main=="Clouds"){
+            img.src="https://cdn-icons-png.flaticon.com/512/899/899683.png";
+            climate.innerHTML="Clouds";
+           }
+           if(data.weather[0].main=="Rain"){
+            img.src="https://cdn-icons-png.flaticon.com/512/3512/3512746.png";
+            climate.innerHTML="Rain";
+           }
+           if(data.weather[0].main=="Mist"){
+            img.src="https://cdn-icons-png.flaticon.com/512/2910/2910067.png";
+            climate.innerHTML="Mist";
+           }
+           if(data.weather[0].main=="Clear"){
+            img.src="https://cdn-icons-png.flaticon.com/512/6581/6581490.png";
+            climate.innerHTML="Clear";
+           }
+           
+          document.querySelector('.container2').style.display="block";
+       
+          
+        }
+        checkWeather();
+    </script>
+</body>
+</html>
